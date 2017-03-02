@@ -88,8 +88,9 @@ viewProject:function(req, res){
               console.log(user_id);
               function findcb(arr) {
                 console.log(arr);
+
                 for(var i=0;i<arr.length;i++){
-                  if(arr[i].toString()==user_id.toString()){
+                  if(arr[i] && arr[i].toString()==user_id.toString()){
                     console.log('accepted: '+arr[i]+" "+user_id);
                     return 1;
                   }

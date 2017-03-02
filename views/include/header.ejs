@@ -131,8 +131,8 @@
               <%if(!session.user){%>
                 <div class="span5 offset3">
                   <form class="well form-inline" id="signIn" method="POST" action="/login">
-                    <input type="email" class="input" id="email" name="email" placeholder="Email">
-                    <input type="password" class="input-small" name="password" placeholder="Password">
+                    <input type="email" class="input" id="email" name="email" placeholder="Email" required>
+                    <input type="password" class="input-small" name="password" placeholder="Password" required>
                     <button type="submit" class="btn">Sign in</button>
                     <br>
                     <%if(session.msg && session.msg.includes('password') >= 0){%>
