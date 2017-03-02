@@ -31,8 +31,10 @@ and client can't rate a work more than once..
 5- The password must include 8 characters at least including a digit and a special character when the Password does not meet the above listed requirements, a relevant error message is displayed.<br>
 6- when Username already exists, a relevant error message is displayed.<br>
 7- Student does not provide username or password when logging in exception. <br>
-8- When creating a portfolio Student does not provide mandatory information. Error message is displayed and No portfolio created.<br>
-9- Student can't create a portfolio if he has a portfolio already.
+8- Student has a valid GUC-ID and belongs to either MET or BI. <br>
+9- When creating a portfolio Student does not provide mandatory information. Error message is displayed and No portfolio created.<br>
+10- Student can't create a portfolio if he has a portfolio already. <br>
+11- <strong>Forgot password feature.</strong>
 
 # Additional design features:
 1- page loader <br>
@@ -41,3 +43,4 @@ and client can't rate a work more than once..
 
 # Additional features:
 passwords are saved inside the database using hashing and by adding salt to ensure security
+
