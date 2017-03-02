@@ -1,0 +1,2 @@
+# uni_portfolio_website
+developped a portfolio system for students. Each student will be able to register to this website, add his or her works. Works can be screenshots, links to websites or code repositories. A client visiting the portfolio will view summary of student portfolios and can then choose to view the detailed portfolio of one student. Clients who are logged in can rate a student’s work. In addition, a client can search the portfolio to view relevant works.
