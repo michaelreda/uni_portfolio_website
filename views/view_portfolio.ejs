@@ -1,0 +1,149 @@
+<% include ../views/include/header %>
+<!--page_container-->
+<div class="page_container">
+  <div class="breadcrumb">
+    <div class="wrap">
+      <div class="container">
+        <a href="/">Home</a><span>/</span><%=student.firstName+" "+student.lastName%>'s portfolio
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="container">
+      <section>
+        <div class="row pad5">
+          <div class="span8">
+            <div id="options">
+                <ul id="filters" class="option-set" data-option-key="filter">
+                    <style>  .dark_btn:hover {  background-color: #0044cc; } </style>
+                    <div id="filterpanel">
+                      <li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
+                      <li><a href="#filter" data-option-value=".Screenshots" class="btn dark_btn">Screenshots</a></li>
+                      <li><a href="#filter" data-option-value=".Codes" class="btn dark_btn">Codes</a></li>
+                      <li><a href="#filter" data-option-value=".Links" class="btn dark_btn">Links</a></li>
+                    </div>
+                    <div class="form-search" style="margin-left:520px;">
+                      <input type="search" id="searchInput" class="input-medium search-query">
+                      <button  id="searchBTN"  class="btn">Search</button>
+                    </div>
+
+                </ul>
+            </div>
+
+            <div class="row">
+                <!-- portfolio_block -->
+                <div id="projects" class="projects">
+                  <% for(var i=0; i<projects.length; i++){%>
+                    <div class="span4 element <%= projects[i].category %>" data-category="<%= projects[i].category %>">
+                      <style>.min_height_img {min-height: 200px;max-height: 200px;}</style>
+
+                            <center><img class="min_height_img" src="<%= projects[i].img %>" alt="" /></center>
+
+                        <div class="item_description">
+                          <% if(session.user && session.user._id == student._id &&projects.length>1){%>
+                            <h6 style="display:inline-block"><a href="/view_project/<%= projects[i]._id %>"> <%= projects[i].title %></a></h6>
+
+                                <a href="/delete_project/<%=projects[i]._id%>" class="btn btn-danger">
+                                  Delete
+                                </a>
+                              <%}else{%>
+                                <h6 ><a href="/view_project/<%= projects[i]._id %>"> <%= projects[i].title %></a></h6>
+
+                                <%}%>
+                            <div class="descr"><%= projects[i].short_descrip %></div>
+                        </div>
+                    </div>
+                  <% } %>
+
+                    <div class="clear"></div>
+                </div>
+                <!-- //portfolio_block -->
+            </div>
+
+          </div>
+          <!--side bar-->
+          <div class="span4" style="    border-left-style: groove;
+          margin-left: 20px;
+          padding-left: 20px;
+          float: right;
+          width: 300px">
+          <div class="sidebar" style="padding-top:4px;">
+            <div class="widget">
+              <h2>About Student</h2>
+            </div>
+            <div class="widget">
+              <center>
+              <%if(student.profileIMG!= "default"){%>
+                  <img src="/profilePics/<%=student.profileIMG%>" alt="<%=student.firstName+" "+student.lastName%>" title="<%=student.firstName+" "+student.lastName%>" class="img-circle"
+                  style=" height: 200px; width: 200px;border-width: medium; border-style: double;">
+                  <%}else{%>
+                  <img src="/img/default_profile.png" alt="<%=student.firstName+" "+student.lastName%>" title="<%=student.firstName+" "+student.lastName%>" class="img-circle"
+                  style=" height: 200px; width: 200px;border-width: medium; border-style: double;">
+                  <%}%>
+
+              <h2 class="title"><span><%=student.firstName+" "+student.lastName%></span></h2>
+              </center>
+              <style>
+              tb{
+                font-size: medium;
+                font-weight: 600;
+                color: darkgreen;
+              }
+              t{
+                color: brown;
+                font-size: medium;
+                font-family: cursive;
+                padding-left: 10px;
+              }
+              </style>
+              <tb>Faculty :</tb><t><%=student.faculty%></t>
+              <div class="clear"></div>
+              <tb>ID :</tb><t><%=student.id%></t>
+
+              <div class="clear"></div>
+              <tb>Email :</tb><t><%=student.email%></t>
+              <div class="clear"></div>
+              <tb>Number of projects :</tb><t><%=projects.length%></t>
+
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<!--//page_container-->
+<% include ../views/include/footer %>
+
+
+<script>
+$("#searchBTN").live("click",function () {
+  $("#projects").empty();
+  $.ajax({
+    url: "http://localhost:8080/search",
+    type: "POST",
+    data: {input: $("#searchInput").val()},
+    dataType: "JSON",
+    async:true,
+    success: function (result) {
+      //console.log(result);
+
+      if(result.length===0){
+
+      }else{
+
+        // $("#client_id").append('<option value="">please select a client to be in contact..</option>');
+        $('#filterpanel').slideUp('slow');
+        for(var i=0;i<result.length;i++) //result['request'] request da esm el array el rag3a fel result
+        {
+          $("#projects").append("<div class='span4 element '"+result[i].category+"' data-category='"+result[i].category+"'>"+"<style>.min_height_img {min-height: 200px;max-height: 200px;}</style>"+" <center><img class='min_height_img' src='"+result[i].img+"' alt='' /></center>"+"<div class='item_description'>"+"<h6><a href='/view_project/"+result[i]._id+"'>"+result[i].title+"</a></h6>"+"<div class='descr'>"+result[i].short_descrip+"</div></div></div>");
+
+        }
+      }
+    }});
+  });
+
+
+</script>

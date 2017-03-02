@@ -1,0 +1,390 @@
+<% include ../views/include/header %>
+
+    <!--page_container-->
+    <div class="page_container">
+    	<!-- <div class="breadcrumb">
+        	<div class="wrap">
+                <div class="container">
+                    <a href="index.html">Home</a><span>/</span>Projects
+                </div>
+            </div>
+        </div> -->
+    	<!--MAIN CONTENT AREA-->
+        <div class="wrap">
+            <div class="container inner_content">
+                <!-- <div id="options">
+                    <ul id="filters" class="option-set" data-option-key="filter">
+                        <style>  .dark_btn:hover {  background-color: #0044cc; } </style>
+                        <li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
+                        <li><a href="#filter" data-option-value=".Screenshots" class="btn dark_btn">Screenshots</a></li>
+                        <li><a href="#filter" data-option-value=".Codes" class="btn dark_btn">Codes</a></li>
+                        <li><a href="#filter" data-option-value=".Links" class="btn dark_btn">Links</a></li>
+
+                    <!-- <div class="clear"></div> -->
+                    <!-- <div class="form-search offset8">
+                      <input type="search" id="searchInput" class="input-medium search-query">
+                      <button  id="searchBTN"  class="btn">Search</button>
+                    </div> -->
+                    </ul>
+                </div>
+
+                    <!-- portfolio_block -->
+                    <div id="projects" class="projects">
+                      <% for(var i=0; i<portfolios.length; i++){%>
+                        <div class="hvr-pop" >
+                          <div class="span4 element"style="border-width: thick;border-style: double;">
+
+                            <div class="media block-update-card" style="background: beige;border-bottom-style: groove;border-width: medium;">
+                              <a class="pull-left" href="#" style="border-width: medium; border-top-style: inset; border-left-style: inset; border-right-style: inset;">
+                                <%if(portfolios[i].student.profileIMG != "default"){%>
+                                <img class="media-object update-card-MDimentions" src="/profilePics/<%=portfolios[i].student.profileIMG%>" alt="">
+                                <%}else{%>
+                                  <img class="media-object update-card-MDimentions" src="/img/default_profile.png" alt="">
+
+                                  <%}%>
+                              </a>
+                              <div class="media-body update-card-body">
+                                <h4 class="media-heading" style="padding-left: 85px;"><%=portfolios[i].student.firstName+ " " +portfolios[i].student.lastName%></h4>
+                                <div class="btn-toolbar card-body-social" style="margin-bottom:0px;padding-left: 85px;" role="toolbar">
+                                  <%=portfolios[i].student.faculty%>, number of works:<%=portfolios[i].works_num%>
+                                  <br>
+                                  <a class="hvr-forward" href="/view_portfolio/<%=portfolios[i].student._id%>">View Portfolio? ➩</a>
+                                </div>
+                              </div>
+                            </div>
+                            <link href="../css/bootstrap-glyphicons.css" rel="stylesheet">
+                            <%for(var j=0;j<portfolios[i].projects.length;j++){%>
+                              <div class="block-update-card status">
+                                <div class="update-card-body">
+                                  <div class="update-card-body">
+                                    <a class="hvr-float" href="/view_project/<%= portfolios[i].projects[j]._id %>">
+                                      <span class="glyphicon glyphicon-<%=portfolios[i].projects[j].category=='Links'?'link':portfolios[i].projects[j].category=='Screenshots'?'camera':'file'%>"></span>
+                                      <%= portfolios[i].projects[j].title %>
+                                    </a>
+                                    <div class="pull-right" style="padding-right: 20px;" title="<%=Math.round(portfolios[i].projects[j].rating*10)/10 %>">
+                                      <%var stars = Math.round(portfolios[i].projects[j].rating)%>
+
+                                        <%for(var k=1;k<6;k++){%>
+                                            <%if(k<stars+1){%>
+                                              <span style="color: coral;" class="glyphicon glyphicon-star"></span>
+                                              <%}else{%>
+                                                <span class="glyphicon glyphicon-star-empty"></span>
+                                          <%}
+                                        }%>
+                                       <span class="glyphicon glyphicon-user"></span><%=portfolios[i].projects[j].num_rating %>
+                                    </div>
+                                    <p><%= portfolios[i].projects[j].short_descrip %></p>
+                                  </div>
+                                </div>
+                              </div>
+                              <%}%>
+                            </div>
+                          </div>
+                      <% } %>
+                        <div class="clear"></div>
+                    </div>
+                    <!-- //portfolio_block -->
+                </div>
+            </div>
+        </div>
+        <center>
+        <div style="background-color:white;margin:0px;" class="pagination">
+          <ul>
+            <%if (session.page-1>0){%>
+            <li><a href="/pages/<%=session.page -1 %>">Prev</a></li>
+            <%}%>
+            <% for(var i=0;i<session.range.length;i++){%>
+                      <li class="<%=session.range[i]==session.page?"active":"" %>"><a href="/pages/<%=session.range[i] %>"><%=session.range[i]%></a></li>
+              <%}%>
+
+            <%if (session.range[session.range.length-1]!=session.page){%>
+            <li><a href="/pages/<%=parseInt(session.page) +1 %>">Next</a></li>
+            <%}%>
+          </ul>
+        </div>
+      </center>
+    <!--//MAIN CONTENT AREA-->
+
+    </div>
+    <!--//page_container-->
+<% include ../views/include/footer %>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+
+  table = document.getElementById("Elimentary_school_Table");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    console.log(td);
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      console.log("1");
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+}
+
+</script>
+
+<!-- <script>
+$('#searchBTN').on('click', function() {
+  document.getElementById('searchBTN').setAttribute("data-option-value","."+document.getElementById('searchInput').value);
+
+});
+</script> -->
+<script>
+$("#searchBTN").live("click",function () {
+  $("#projects").empty();
+  $.ajax({
+    url: "http://localhost:8080/search",
+    type: "POST",
+    data: {input: $("#searchInput").val()},
+    dataType: "JSON",
+    async:true,
+    success: function (result) {
+      //console.log(result);
+
+      if(result.length===0){
+
+      }else{
+
+        // $("#client_id").append('<option value="">please select a client to be in contact..</option>');
+
+        for(var i=0;i<result.length;i++) //result['request'] request da esm el array el rag3a fel result
+        {
+          $("#projects").append("<div class='span4 element '"+result[i].category+"' data-category='"+result[i].category+"'>"+"<style>.min_height_img {min-height: 200px;max-height: 200px;}</style>"+" <center><img class='min_height_img' src='"+result[i].img+"' alt='' /></center>"+"<div class='item_description'>"+"<h6><a href='/view_project/"+result[i]._id+"'>"+result[i].title+"</a></h6>"+"<div class='descr'>"+result[i].short_descrip+"</div></div></div>");
+
+        }
+      }
+    }});
+  });
+
+
+</script>
+<style>
+.block-update-card {
+  height: 100%;
+  border: 1px #FFFFFF solid;
+  width: 380px;
+  float: left;
+  /*margin-left: 10px;*/
+  margin-top: 0;
+  padding: 0;
+  box-shadow: 1px 1px 8px #d8d8d8;
+  background-color: #FFFFFF;
+}
+.block-update-card .h-status {
+  width: 100%;
+  height: 7px;
+  background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
+}
+.block-update-card .v-status {
+  width: 5px;
+  height: 80px;
+  float: left;
+  margin-right: 5px;
+  background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
+}
+.block-update-card .update-card-MDimentions {
+  width: 80px;
+  height: 80px;
+}
+.block-update-card .update-card-body {
+  margin-top: 10px;
+  margin-left: 5px;
+}
+.block-update-card .update-card-body a {
+  font-variant: small-caps;
+  /*color: #737373;*/
+  font-weight: bold;
+  font-size: 16px;
+}
+.block-update-card .update-card-body p {
+  color: #737373;
+  font-size: 12px;
+  width: 95%;
+}
+.block-update-card .card-action-pellet {
+  padding: 5px;
+}
+.block-update-card .card-action-pellet div {
+  margin-right: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  color: #dddddd;
+}
+.block-update-card .card-action-pellet div:hover {
+  color: #999999;
+}
+.block-update-card .card-bottom-status {
+  color: #a9a9aa;
+  font-weight: bold;
+  font-size: 14px;
+  border-top: #e0e0e0 1px solid;
+  padding-top: 5px;
+  margin: 0px;
+}
+.block-update-card .card-bottom-status:hover {
+  background-color: #dd4b39;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+/*
+Creating a block for social media buttons
+*/
+.card-body-social {
+  font-size: 13px;
+  margin-top: 10px;
+}
+.card-body-social .git {
+  color: black;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .twitter {
+  color: #19C4FF;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .google-plus {
+  color: #DD4B39;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .facebook {
+  color: #49649F;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .linkedin {
+  color: #007BB6;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.music-card {
+  background-color: green;
+}
+
+</style>
+<style>
+.hvr-border-fade {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow;
+    transition-property: box-shadow;
+    box-shadow: inset 0 0 0 4px #e1e1e1, 0 0 1px transparent;
+}
+
+</style>
+
+<style>
+/* Bounce In */
+.hvr-bounce-in {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+.hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+/* Pop */
+@-webkit-keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+  }
+}
+@keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+  }
+}
+.hvr-pop {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+}
+.hvr-pop:hover, .hvr-pop:focus, .hvr-pop:active {
+  -webkit-animation-name: hvr-pop;
+  animation-name: hvr-pop;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+/* Forward */
+.hvr-forward {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.hvr-forward:hover, .hvr-forward:focus, .hvr-forward:active {
+  -webkit-transform: translateX(8px);
+  transform: translateX(8px);
+}
+/* Float */
+.hvr-float {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-float:hover, .hvr-float:focus, .hvr-float:active {
+  -webkit-transform: translateY(-8px);
+  transform: translateY(-8px);
+}
+</style>

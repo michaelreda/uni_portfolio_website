@@ -1,0 +1,131 @@
+<% include ../views/include/header %>
+
+    <!--page_container-->
+    <div class="page_container">
+    	<!-- <div class="breadcrumb">
+        	<div class="wrap">
+                <div class="container">
+                    <a href="index.html">Home</a><span>/</span>Projects
+                </div>
+            </div>
+        </div> -->
+    	<!--MAIN CONTENT AREA-->
+        <div class="wrap">
+            <div class="container inner_content">
+                <div id="options">
+                    <ul id="filters" class="option-set" data-option-key="filter">
+                        <style>  .dark_btn:hover {  background-color: #0044cc; } </style>
+                        <li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
+                        <li><a href="#filter" data-option-value=".Screenshots" class="btn dark_btn">Screenshots</a></li>
+                        <li><a href="#filter" data-option-value=".Codes" class="btn dark_btn">Codes</a></li>
+                        <li><a href="#filter" data-option-value=".Links" class="btn dark_btn">Links</a></li>
+
+                    <!-- <div class="clear"></div> -->
+                    <div class="form-search offset8">
+                      <input type="search" id="searchInput" class="input-medium search-query">
+                      <button  id="searchBTN"  class="btn">Search</button>
+                    </div>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <!-- portfolio_block -->
+                    <div id="projects" class="projects">
+                      <% for(var i=0; i<projects.length; i++){%>
+                        <div class="span4 element <%= projects[i].category %>" data-category="<%= projects[i].category %>">
+                          <style>.min_height_img {min-height: 200px;max-height: 200px;}</style>
+
+                                <center><img class="min_height_img" src="<%= projects[i].img %>" alt="" /></center>
+
+                            <div class="item_description">
+                                <h6><a href="/view_project/<%= projects[i]._id %>"> <%= projects[i].title %></a></h6>
+                                <div class="descr"><%= projects[i].short_descrip %></div>
+                            </div>
+                        </div>
+                      <% } %>
+
+                        <div class="clear"></div>
+                    </div>
+                    <!-- //portfolio_block -->
+                </div>
+            </div>
+        </div>
+    <!--//MAIN CONTENT AREA-->
+
+    </div>
+    <!--//page_container-->
+<% include ../views/include/footer %>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+
+  table = document.getElementById("Elimentary_school_Table");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    console.log(td);
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      console.log("1");
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+}
+
+</script>
+
+<!-- <script>
+$('#searchBTN').on('click', function() {
+  document.getElementById('searchBTN').setAttribute("data-option-value","."+document.getElementById('searchInput').value);
+
+});
+</script> -->
+<script>
+$("#searchBTN").live("click",function () {
+  $("#projects").empty();
+  $.ajax({
+    url: "http://localhost:8080/search",
+    type: "POST",
+    data: {input: $("#searchInput").val()},
+    dataType: "JSON",
+    async:true,
+    success: function (result) {
+      //console.log(result);
+
+      if(result.length===0){
+
+      }else{
+
+        // $("#client_id").append('<option value="">please select a client to be in contact..</option>');
+
+        for(var i=0;i<result.length;i++) //result['request'] request da esm el array el rag3a fel result
+        {
+          $("#projects").append("<div class='span4 element '"+result[i].category+"' data-category='"+result[i].category+"'>"+"<style>.min_height_img {min-height: 200px;max-height: 200px;}</style>"+" <center><img class='min_height_img' src='"+result[i].img+"' alt='' /></center>"+"<div class='item_description'>"+"<h6><a href='/view_project/"+result[i]._id+"'>"+result[i].title+"</a></h6>"+"<div class='descr'>"+result[i].short_descrip+"</div></div></div>");
+
+        }
+      }
+    }});
+  });
+
+
+</script>

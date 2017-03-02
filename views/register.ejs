@@ -1,0 +1,219 @@
+<% include ../views/include/header %>
+<!--page_container-->
+<div class="page_container">
+  <div class="breadcrumb">
+    <div class="wrap">
+      <div class="container">
+        <a href="index.html">Home</a><span>/</span>Register
+      </div>
+    </div>
+  </div>
+  <!--MAIN CONTENT AREA-->
+  <div class="wrap">
+    <div class="container inner_content">
+      <!--enctype="multipart/form-data"-->
+      <form class="form-horizontal" >
+        <fieldset>
+          <legend>Register a new account</legend>
+          <!-- <div class="control-group" id="firstNameDiv">
+            <label class="control-label" for="firstName">First Name :</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="firstName" name="firstName" placeholder="First Name">
+              <span class="help-inline" id="FirstNameErrorText"></span>
+
+            </div>
+          </div>
+
+          <div class="control-group" id="lastNameDiv">
+            <label class="control-label" for="lastName">Last Name :</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="lastName" name="lastName" placeholder="Last Name">
+              <span class="help-inline" id="LastNameErrorText"></span>
+            </div>
+          </div> -->
+
+          <div class="control-group" id="emailDiv">
+            <label class="control-label" for="email">Email :</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="emailR" name="emailR" placeholder="Email">
+              <span class="help-inline" id="EmailErrorText"></span>
+
+            </div>
+          </div>
+
+          <div class="control-group" id="passwordDiv">
+            <label class="control-label" for="password">Password :</label>
+            <div class="controls">
+              <input type="password" class="input-xlarge" id="password" name="password" placeholder="Password">
+              <span class="help-inline" id="PasswordErrorText"></span>
+
+            </div>
+          </div>
+
+          <div class="control-group" id="cpasswordDiv">
+            <label class="control-label" for="confirmPassword">Confirm Password :</label>
+            <div class="controls">
+              <input type="password" class="input-xlarge" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+              <span class="help-inline" id="CPasswordErrorText"></span>
+            </div>
+          </div>
+
+          <!-- <div class="control-group">
+            <label class="control-label" for="id">Your Id :</label>
+            <div class="controls">
+              <input type="text" class="input" style="width:30px;" id="id1" name="id1" maxlength="2"><strong>-</strong>
+              <input type="text" class="input-small" id="id2" name="id2">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="faculty">Faculty :</label>
+            <div class="controls">
+              <select id="faculty" name="faculty">
+                <option value="null">Choose your faculty</option>
+                <option value="BI">BI</option>
+                <option value="MET">MET</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="fileInput">Upload Profile Image :</label>
+            <div class="controls">
+              <input class="input-file" id="fileInput" type="file" name="profileIMG">
+            </div>
+          </div> -->
+
+          <button class="btn btn-success offset2" type="button" id="submit">Register</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+
+
+  <% include ../views/include/footer %>
+
+  <script>
+
+  $('#firstName').on('blur', function() {
+    document.getElementById('FirstNameErrorText').innerHTML="";
+    var el = document.getElementById('firstNameDiv');
+    el.classList.remove("error");
+    el.classList.remove("success");
+
+    if($(this).val().length<3){
+        el.classList.add("error");
+        document.getElementById('FirstNameErrorText').innerHTML="Please enter a valid first name.";
+    }else{
+      el.classList.add("success");
+    }
+
+  });
+
+  $('#lastName').on('blur', function() {
+    document.getElementById('LastNameErrorText').innerHTML="";
+    var el = document.getElementById('lastNameDiv');
+    el.classList.remove("error");
+    el.classList.remove("success");
+
+    if($(this).val().length<3){
+        el.classList.add("error");
+        document.getElementById('LastNameErrorText').innerHTML="Please enter a valid last name.";
+    }else{
+      el.classList.add("success");
+    }
+
+  });
+
+  $('#emailR').on('blur', function() {
+    email();
+  });
+  function email(){
+    document.getElementById('EmailErrorText').innerHTML="";
+    var el = document.getElementById('emailDiv');
+    el.classList.remove("error");
+    el.classList.remove("success");
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if(!re.test($('#emailR').val())){
+        el.classList.add("error");
+        document.getElementById('EmailErrorText').innerHTML="Please enter a valid email.";
+        return 0;
+    }else{
+      el.classList.add("success");
+      return 1;
+    }
+  }
+
+  $('#password').on('blur', function() {
+    password();
+  });
+
+  function password(){
+    var hasNumber = /\d/;
+    var hasSpecial = /^[a-zA-Z0-9- ]*$/;
+    var el = document.getElementById('passwordDiv');
+    document.getElementById('PasswordErrorText').innerHTML="";
+    password1=$('#password').val();
+    el.classList.remove("error");
+    el.classList.remove("success");
+    if($('#password').val().length<8){
+      el.className += el.className ? ' error' : 'error';
+      document.getElementById('PasswordErrorText').innerHTML="The password must include 8 characters at least.";
+      return 0;
+    }else if(!hasNumber.test($('#password').val())){
+      el.className += el.className ? ' error' : 'error';
+      document.getElementById('PasswordErrorText').innerHTML="The password must include at least one digit.";
+      return 0;
+    }else if(hasSpecial.test($('#password').val())){
+      el.className += el.className ? ' error' : 'error';
+      document.getElementById('PasswordErrorText').innerHTML="The password must include at least one special character.";
+      return 0;
+    }else{
+      el.classList.remove("error");
+      el.classList.add("success");
+      return 1;
+    }
+  }
+  var password1='1';
+  var password2='2';
+
+  $('#confirmPassword').on('blur', function() {
+    confirmPassword();
+  });
+  function confirmPassword(){
+    password2=$('#confirmPassword').val();
+    document.getElementById('CPasswordErrorText').innerHTML="";
+    var el = document.getElementById('cpasswordDiv');
+    el.classList.remove("error");
+    el.classList.remove("success");
+    if(password1!=password2 || password2== ""){
+        el.classList.add("error");
+        document.getElementById('CPasswordErrorText').innerHTML="The confirmed password is wrong, please try again.";
+        return 0;
+    }else{
+      el.classList.add("success");
+      return 1;
+    }
+
+  }
+
+  $('#submit').on('click',function(){
+    //alert(email() && password() && confirmPassword());
+    if(email() && password() && confirmPassword()){
+      $.post("/register",
+    {
+        email: $('#emailR').val(),
+        password: $('#password').val()
+    },function(data){
+      if(data){
+        window.location.replace(data);
+      }
+    });
+    }
+  })
+
+  </script>
+
+<script src="js/validator.min.js"></script>

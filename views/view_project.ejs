@@ -1,0 +1,634 @@
+<% include ../views/include/header %>
+<link href="../css/popUp.css" rel="stylesheet">
+<!--page_container-->
+<div class="page_container">
+  <div class="breadcrumb">
+    <div class="wrap">
+      <div class="container">
+        <a href="/">Home</a><span>/</span><%=project.title%>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="container">
+      <section>
+        <div class="row pad5">
+          <div class="span8">
+            <div class="post">
+              <%
+              if(project.Screenshots.length >0){
+                %>
+
+                <!-- <script>
+src="https://code.jquery.com/jquery-3.1.1.min.js"
+integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+crossorigin="anonymous"></script> -->
+
+                <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js">
+              </script>
+              <script>
+              var jQuery_2_2_4 = $.noConflict(true); //needed for slide
+              </script>
+              <script
+  src="https://code.jquery.com/jquery-3.0.0.min.js"
+  integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+  crossorigin="anonymous"></script>
+  <script>
+  var jQuery_3_0_0 = $.noConflict(true); //needed for starring
+  </script> -->
+                <%include ../views/gallery%>
+                <%}else{ %>
+
+                  <center><img src="<%=project.img%>" style="min-height: 200px" alt="" /></center>
+                  <%}%>
+                  <div class="post_info">
+                    <div>On <span><%=project.date%></span>
+
+                      <div class="clear"></div>
+                    </div>
+                    <h2 class="title" style="display:inline-block"><%=project.title%></h2>
+                    <% if(session.user && session.user._id == project.student._id){%>
+                    <button type="button"  title="edit title" class="btn btn-warning" data-toggle="modal" data-target="#title_modal"><span class="glyphicon glyphicon-pencil" style="color:#f5f5f5"></button>
+                    <div id="title_modal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">Edit title!</h4>
+                          </div>
+                          <form class="form-horizontal" method="post" action="/update_project_title">
+                            <div class="modal-body">
+
+                              <div class="control-group" id="titleDiv">
+                                <label class="control-label" for="title">Title :</label>
+                                <div class="controls">
+                                  <input type="text" style="height: 35px;" class="input-xlarge" id="title" name="title" value="<%=project.title%>" required>
+                                  <input type="hidden" name="projectId" value="<%=project._id%>">
+                                  <span class="help-inline" id="TitleErrorText"></span>
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-success">Update</button>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      </div>
+                    </div>
+                    <%}%>
+                    <div class="clear"></div>
+                    <p style="display:inline-block"><%=project.descrip?project.descrip:project.short_descrip%></p>
+                    <% if(session.user && session.user._id == project.student._id){%>
+                    <button type="button" title="edit description" class="btn btn-warning" data-toggle="modal" data-target="#descrip_modal"><span class="glyphicon glyphicon-pencil" style="color:#f5f5f5"></button>
+                    <div id="descrip_modal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">Edit description!</h4>
+                          </div>
+                          <form class="form-horizontal"method="post" action="/update_project_descrip" >
+                            <div class="modal-body">
+
+                              <div class="control-group">
+                                <label class="control-label" for="short_descrip">Short Description :</label>
+                                <div class="controls">
+                                  <textarea class="input-xlarge" name="short_descrip" id="short_descrip_in" rows="4" maxlength="140" placeholder="Write a brief about your work.."><%=project.short_descrip%></textarea>
+                                  <p id="counter">Characters left: 140</p>
+                                </div>
+                              </div>
+
+                              <div class="control-group">
+                                <label class="control-label" for="short_descrip">Description :</label>
+                                <div class="controls">
+                                  <textarea class="input-xlarge" name="descrip" id="descrip" rows="9" placeholder="Write a detailed description about your work.." ><%=project.descrip%></textarea>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <input type="hidden" name="projectId" value="<%=project._id%>">
+
+                              <button type="submit" class="btn btn-success">Update</button>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      </div>
+                    </div>
+                    <%}%>
+                    <br>
+
+
+
+                    <%if(project.category=="Codes"){%>
+                      <p style="display:inline-block"><strong>Link to repo: </strong><a href="https://github.com/<%=project.repo%>">https://github.com/<%=project.repo%></a></p>
+                      <% if(session.user && session.user._id == project.student._id){%>
+                      <button type="button"  title="edit repo" class="btn btn-warning" data-toggle="modal" data-target="#repo_modal"><span class="glyphicon glyphicon-pencil" style="color:#f5f5f5"></button>
+                        <div id="repo_modal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                <h4 class="modal-repo">Edit repo!</h4>
+                              </div>
+                              <form class="form-horizontal" method="post" action="/update_project_repo">
+                                <div class="modal-body">
+
+                                  <div class="control-group" id="repoDiv">
+                                    <label class="control-label" for="repo">Repo:</label>
+                                    <div class="controls">
+                                      <input type="text" pattern="((?:[a-z][a-z0-9_]*))(\/)((?:[a-z][a-z0-9_]*))" style="height: 35px;" class="input-xlarge" id="repo" name="repo" value="<%=project.repo%>" required>
+                                      <input type="hidden" name="projectId" value="<%=project._id%>">
+                                      <span class="help-inline" id="RepoErrorText"></span>
+                                      <p> username/repo</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success">Update</button>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </form>
+                            </div>
+
+                          </div>
+                        </div>
+                      <%}%>
+                      <%}%>
+                      <%if(project.category=="Links"){%>
+                        <p style="display: inline-block;"><strong>Link: </strong><a href="<%=project.URL%>"><%=project.URL%></a></p>
+                        <% if(session.user && session.user._id == project.student._id){%>
+                        <button type="button"  title="edit link" class="btn btn-warning" data-toggle="modal" data-target="#link_modal"><span class="glyphicon glyphicon-pencil" style="color:#f5f5f5"></button>
+                          <div id="link_modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">×</button>
+                                  <h4 class="modal-link">Edit link!</h4>
+                                </div>
+                                <form class="form-horizontal" method="post" action="/update_project_link">
+                                  <div class="modal-body">
+
+                                    <div class="control-group" id="linkDiv">
+                                      <label class="control-label" for="link">Link :</label>
+                                      <div class="controls">
+                                        <input type="url" style="height: 35px;" class="input-xlarge" id="link" name="link" value="<%=project.URL%>" required>
+                                        <input type="hidden" name="projectId" value="<%=project._id%>">
+                                        <span class="help-inline" id="LinkErrorText"></span>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  </div>
+                                </form>
+                              </div>
+
+                            </div>
+                          </div>
+                        <%}%>
+                        <%}%>
+                      </div>
+
+                      <!--ratings-->
+                      <link href="../css/bootstrapRating.css" rel="stylesheet">
+                      <style>
+                      .glyphicon { margin-right:5px;}
+                      .rating .glyphicon {font-size: 22px;}
+                      .rating-num { margin-top:0px;font-size: 54px; }
+                      .progress { margin-bottom: 5px;}
+                      .progress-bar { text-align: left; }
+                      .rating-desc .col-md-3 {padding-right: 0px;}
+                      .sr-only { margin-left: 5px;overflow: visible;clip: auto;color:black;margin-top: 3px; }
+
+                      </style>
+                      <div class="containter">
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6" style="width:100%">
+                            <div class="well well-sm">
+                              <div class="row">
+                                <div class="col-xs-12 col-md-6 text-center">
+                                  <h1 class="rating-num">
+                                    <%= Math.round(project.rating*10)/10 %></h1>
+
+                                    <div class="row lead evaluation">
+
+                                      <div id="colorstar" class="starrr ratable"></div>
+
+                                      <span id="count">0</span> star(s) - <span id="meaning"> </span>
+
+                                    </div>
+
+                                    <div>
+                                      <span class="glyphicon glyphicon-user"></span><%=project.num_rating%> total
+                                      <br>
+                                      <%if(session.user){
+                                        if(session.user.hasPortfolio){%>
+
+                                          <div style="color:red">
+                                            You are a student you can't rate works..
+                                          </div>
+                                          <%}else if(project.rated_before==0){%>
+                                            <form method="post" action="/rate">
+                                              <input type="hidden" value="<%=project._id%>" name="projectId"/>
+                                              <input type="hidden" value="0" id="rating" name="inputRating"/>
+                                              <input type="hidden" value="<%=project.rating%>" name="old_rating"/>
+                                              <input type="hidden" value="<%=project.num_rating%>" name="num_rating"/>
+                                              <button class="btn btn-success">Rate</button>
+                                            </form>
+                                            <%}else{%>
+                                              <div style="color:red">
+                                                you have rated this project before, you can't rate again
+                                              </div>
+                                              <%}%>
+                                              <%}else{%>
+                                                <div style="color:red">
+                                                  you are not logged in so you can't rate
+                                                </div>
+                                                <%}%>
+
+                                              </div>
+                                            </div>
+                                            <div class="col-xs-12 col-md-6">
+                                              <div class="row rating-desc">
+                                                <div class="col-xs-3 col-md-3 text-right">
+                                                  <span class="glyphicon glyphicon-star"></span>5
+                                                </div>
+                                                <div class="col-xs-8 col-md-9">
+                                                  <div class="progress progress-striped">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                    aria-valuemin="0" aria-valuemax="100" style="width: <%=Math.round( (project.fiveRating.length/project.num_rating)*100 *10)/10%>%">
+                                                    <span class="sr-only"><%=project.num_rating!=0? Math.round( (project.fiveRating.length/project.num_rating)*100 *10)/10 :0%>%</span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <!-- end 5 -->
+                                              <div class="col-xs-3 col-md-3 text-right">
+                                                <span class="glyphicon glyphicon-star"></span>4
+                                              </div>
+                                              <div class="col-xs-8 col-md-9">
+                                                <div class="progress">
+                                                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                  aria-valuemin="0" aria-valuemax="100" style="width: <%=Math.round( (project.fourRating.length/project.num_rating)*100 *10)/10%>%">
+                                                  <span class="sr-only"><%=project.num_rating!=0? Math.round( (project.fourRating.length/project.num_rating)*100 *10)/10 :0%>%</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <!-- end 4 -->
+                                            <div class="col-xs-3 col-md-3 text-right">
+                                              <span class="glyphicon glyphicon-star"></span>3
+                                            </div>
+                                            <div class="col-xs-8 col-md-9">
+                                              <div class="progress">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100" style="width: <%=Math.round( (project.threeRating.length/project.num_rating)*100 *10)/10%>%">
+                                                <span class="sr-only"><%=project.num_rating!=0? Math.round( (project.threeRating.length/project.num_rating)*100 *10)/10 :0%>%</span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <!-- end 3 -->
+                                          <div class="col-xs-3 col-md-3 text-right">
+                                            <span class="glyphicon glyphicon-star"></span>2
+                                          </div>
+                                          <div class="col-xs-8 col-md-9">
+                                            <div class="progress">
+                                              <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                              aria-valuemin="0" aria-valuemax="100" style="width: <%=Math.round( (project.twoRating.length/project.num_rating)*100 *10)/10%>%">
+                                              <span class="sr-only"><%=project.num_rating!=0? Math.round( (project.twoRating.length/project.num_rating)*100 *10)/10 :0%>%</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- end 2 -->
+                                        <div class="col-xs-3 col-md-3 text-right">
+                                          <span class="glyphicon glyphicon-star"></span>1
+                                        </div>
+                                        <div class="col-xs-8 col-md-9">
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: <%=Math.round( (project.oneRating.length/project.num_rating)*100 *10)/10%>%">
+                                            <span class="sr-only"><%=project.num_rating!=0? Math.round( (project.oneRating.length/project.num_rating)*100 *10)/10 :0%>%</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- end 1 -->
+                                    </div>
+                                    <!-- end row -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- end ratings -->
+
+                      </div>
+
+                    </div>
+                    <!--side bar-->
+                    <div class="span4" style="    border-left-style: groove;
+                    margin-left: 20px;
+                    padding-left: 20px;
+                    float: right;
+                    width: 300px">
+                    <div class="sidebar" style="padding-top:4px;">
+                      <div class="widget">
+                        <h2>About Student</h2>
+                      </div>
+                      <div class="widget">
+                        <center>
+                          <%if(project.student.profileIMG!= "default"){%>
+                          <img src="/profilePics/<%=project.student.profileIMG%>" alt="<%=project.student.firstName+" "+project.student.lastName%>" title="<%=project.student.firstName+" "+project.student.lastName%>" class="img-circle"
+                          style=" height: 200px; width: 200px;border-width: medium; border-style: double;">
+                          <%}else{%>
+                            <img src="/img/default_profile.png" alt="<%=project.student.firstName+" "+project.student.lastName%>" title="<%=project.student.firstName+" "+project.student.lastName%>" class="img-circle"
+                            style=" height: 200px; width: 200px;border-width: medium; border-style: double;">
+                            <%}%>
+                          <h2 class="title"><span><%=project.student.firstName+" "+project.student.lastName%></span></h2>
+                        </center>
+                        <style>
+                        tb{
+                          font-size: medium;
+                          font-weight: 600;
+                          color: darkgreen;
+                        }
+                        t{
+                          color: brown;
+                          font-size: medium;
+                          font-family: cursive;
+                          padding-left: 10px;
+                        }
+                        </style>
+                        <tb>Faculty :</tb><t><%=project.student.faculty%></t>
+                        <div class="clear"></div>
+                        <tb>ID :</tb><t><%=project.student.id%></t>
+                        <div class="clear"></div>
+                        <tb>Email :</tb><t><%=project.student.title%></t>
+                        <div class="clear"></div>
+                        <tb>Number of projects :</tb><t><%=project.student.noOfProjects%></t>
+
+                      </div>
+                      <p><a href="/view_portfolio/<%=project.student._id%>" style=" font-size: large; padding-top:10px; " class="arrow_link">View <%=project.student.firstName%>'s portfolio ➩</a></p>
+                      <div class="widget">
+                        <h2 class="title"><span><%=project.student.firstName%>'s recent projects</span></h2>
+                        <%= recentProjects.length==0?"There are no other projects for this student at the moment.":"" %>
+                        <ul class="recent_post">
+                          <% for(var i=0;i<recentProjects.length;i++){
+                            %>
+                            <li>
+                              <a href="#"><img src="<%=recentProjects[i].img%>" style="height: 50px; width: 50px;" alt=""></a>
+                              <div><a href="/view_project/<%= recentProjects[i]._id %>" style="font-weight: 800;"><%=recentProjects[i].title%> </a></div>
+                              <p><%=recentProjects[i].date%></p>
+                              <div style="color:brown"><%=recentProjects[i].short_descrip%></div>
+                              <div class="clear"></div>
+                            </li>
+                            <%}%>
+
+                          </ul>
+                        </div>
+
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+            <!--//page_container-->
+            <% include ../views/include/footer %>
+
+            <script>
+            // Starrr plugin (https://github.com/dobtco/starrr)
+            var __slice = [].slice;
+
+            (function($, window) {
+              var Starrr;
+
+              Starrr = (function() {
+                Starrr.prototype.defaults = {
+                  rating: void 0,
+                  numStars: 5,
+                  change: function(e, value) {}
+                };
+
+                function Starrr($el, options) {
+                  var i, _, _ref,
+                  _this = this;
+
+                  this.options = $.extend({}, this.defaults, options);
+                  this.$el = $el;
+                  _ref = this.defaults;
+                  for (i in _ref) {
+                    _ = _ref[i];
+                    if (this.$el.data(i) != null) {
+                      this.options[i] = this.$el.data(i);
+                    }
+                  }
+
+                  this.createStars();
+                  this.syncRating();
+                  this.$el.on('mouseover.starrr', 'span', function(e) {
+                    return _this.syncRating(_this.$el.find('span').index(e.currentTarget) + 1);
+                  });
+                  this.$el.on('mouseout.starrr', function() {
+                    return _this.syncRating();
+                  });
+                  this.$el.on('click.starrr', 'span', function(e) {
+                    document.getElementById("rating").value =_this.$el.find('span').index(e.currentTarget)+1;
+                    return _this.setRating(_this.$el.find('span').index(e.currentTarget) + 1);
+                  });
+                  this.$el.on('starrr:change', this.options.change);
+                }
+
+                Starrr.prototype.createStars = function() {
+                  var _i, _ref, _results;
+
+                  _results = [];
+                  for (_i = 1, _ref = this.options.numStars; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
+                    _results.push(this.$el.append("<span class='glyphicon .glyphicon-star-empty'></span>"));
+                  }
+                  return _results;
+                };
+
+                Starrr.prototype.setRating = function(rating) {
+                  if (this.options.rating === rating) {
+                    rating = void 0;
+                  }
+                  this.options.rating = rating;
+                  this.syncRating();
+                  return this.$el.trigger('starrr:change', rating);
+                };
+
+                Starrr.prototype.syncRating = function(rating) {
+                  var i, _i, _j, _ref;
+
+                  rating || (rating = this.options.rating);
+                  if (rating) {
+                    for (i = _i = 0, _ref = rating - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                      this.$el.find('span').eq(i).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+                    }
+                  }
+                  if (rating && rating < 5) {
+                    for (i = _j = rating; rating <= 4 ? _j <= 4 : _j >= 4; i = rating <= 4 ? ++_j : --_j) {
+                      this.$el.find('span').eq(i).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+                    }
+                  }
+                  if (!rating) {
+                    return this.$el.find('span').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+                  }
+                };
+
+                return Starrr;
+
+              })();
+
+              return $.fn.extend({
+                starrr: function() {
+                  var args, option;
+
+                  option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+                  return this.each(function() {
+                    var data;
+
+                    data = $(this).data('star-rating');
+                    if (!data) {
+                      $(this).data('star-rating', (data = new Starrr($(this), option)));
+                    }
+                    if (typeof option === 'string') {
+                      return data[option].apply(data, args);
+                    }
+                  });
+                }
+              });
+            })(window.jQuery, window);
+
+            $(function() {
+              return $(".starrr").starrr();
+            });
+
+            $( document ).ready(function() {
+
+              var correspondence=["","Really Bad","Bad","Fair","Good","Excelent"];
+
+              $('.ratable').on('starrr:change', function(e, value){
+
+                $(this).closest('.evaluation').children('#count').html(value);
+                $(this).closest('.evaluation').children('#meaning').html(correspondence[value]);
+
+                var currentval=  $(this).closest('.evaluation').children('#count').html();
+
+                var target=  $(this).closest('.evaluation').children('.indicators');
+                target.css("color","black");
+                target.children('.rateval').val(currentval);
+                target.children('#textwr').html(' ');
+
+
+                if(value<3){
+                  target.css("color","red").show();
+                  target.children('#textwr').text('What can be improved?');
+                }else{
+                  if(value>3){
+                    target.css("color","green").show();
+                    target.children('#textwr').html('What was done correctly?');
+                  }else{
+                    target.hide();
+                  }
+                }
+
+              });
+
+
+
+
+
+              $('#hearts-existing').on('starrr:change', function(e, value){
+                $('#count-existing').html(value);
+              });
+            });
+
+
+
+
+
+            $(function () {
+              $('.button-checkbox').each(function () {
+
+                // Settings
+                var $widget = $(this),
+                $button = $widget.find('button'),
+                $checkbox = $widget.find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                  on: {
+                    icon: 'glyphicon glyphicon-check'
+                  },
+                  off: {
+                    icon: 'fa fa-square-o'
+                  }
+                };
+
+                // Event Handlers
+                $button.on('click', function () {
+                  $checkbox.prop('checked', !$checkbox.is(':checked'));
+                  $checkbox.triggerHandler('change');
+                  updateDisplay();
+                });
+                $checkbox.on('change', function () {
+                  updateDisplay();
+                });
+
+                // Actions
+                function updateDisplay() {
+                  var isChecked = $checkbox.is(':checked');
+
+                  // Set the button's state
+                  $button.data('state', (isChecked) ? "on" : "off");
+
+                  // Set the button's icon
+                  $button.find('.state-icon')
+                  .removeClass()
+                  .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+                  // Update the button's color
+                  if (isChecked) {
+                    $button
+                    .removeClass('btn-default')
+                    .addClass('btn-' + color + ' active');
+                  }
+                  else {
+                    $button
+                    .removeClass('btn-' + color + ' active')
+                    .addClass('btn-default');
+                  }
+                }
+
+                // Initialization
+                function init() {
+
+                  updateDisplay();
+
+                  // Inject the icon if applicable
+                  if ($button.find('.state-icon').length == 0) {
+                    $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+                  }
+                }
+                init();
+              });
+            });
+
+
+            </script>
+            <script>
+              $("#short_descrip_in").keyup(function(){
+                $("#counter").text("Characters left: " + (140- $(this).val().length));
+              });
+              </script>

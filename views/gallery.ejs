@@ -1,0 +1,75 @@
+
+<link href="../css/bootstrapGallery.css" rel="stylesheet">
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+<!-- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<div class="carousel slide article-slide" id="article-photo-carousel">
+  <div class="carousel-inner cont-slider" style="min-height: 300px;">
+<%for(var i=0;i<project.Screenshots.length;i++){%>
+    <div class="item <%= i==0?'active':''%>" >
+      <img alt="" title="" src="public/profilePics/<%=project.Screenshots[i]%>" style="height=400px !important;width=600px;">
+    </div>
+      <%}%>
+  </div>
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <%for(var i=0;i<project.Screenshots.length;i++){%>
+    <li class="<%= i==0?'active':''%>" data-slide-to="<%=i%>" data-target="#article-photo-carousel">
+      <img alt="" src="public/profilePics/<%=project.Screenshots[i]%>">
+    </li>
+    <%}%>
+  </ol>
+</div>
+
+<style>
+/* Main carousel style */
+.carousel {
+    width: 600px;
+}
+
+/* Indicators list style */
+.article-slide .carousel-indicators {
+    bottom: 0 ;
+    left: 0 ;
+    margin-left: 5px !important;
+    width: 100% !important;
+}
+/* Indicators list style */
+.article-slide .carousel-indicators li {
+    border: medium none !important;
+    border-radius: 0 !important;
+    float: left !important;
+    height: 54px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0 !important;
+    margin-right: 5px !important;
+    margin-top: 0 !important;
+    width: 100px !important;
+}
+/* Indicators images style */
+.article-slide .carousel-indicators img {
+    border: 2px solid #FFFFFF !important;
+    float: left !important;
+    height: 54px !important;
+    left: 0 !important;
+    width: 100px !important;
+
+}
+/* Indicators active image style */
+.article-slide .carousel-indicators .active img {
+    border: 2px solid #428BCA !important;
+    opacity: 0.7 !important;
+}
+
+
+</style>
+
+
+<script>
+$('.carousel').carousel();
+// Stop carousel
+$('.carousel').carousel({
+  interval: false
+});
+</script>

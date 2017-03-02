@@ -1,0 +1,194 @@
+<% include ../views/include/header %>
+<!--page_container-->
+<div class="page_container">
+  <div class="breadcrumb">
+    <div class="wrap">
+      <div class="container">
+        <a href="index.html">Home</a><span>/</span>Create Portfolio
+      </div>
+    </div>
+  </div>
+  <!--MAIN CONTENT AREA-->
+  <div class="wrap">
+    <div class="container inner_content">
+      <!--method="POST" action="/create_portfolio/<%=session.user._id%>"-->
+
+      <form id="form" class="form-horizontal"  method="post"  action="/add_project" enctype="multipart/form-data">
+
+        <fieldset>
+
+
+          <h3>To create a portfolio you need at least to have one work in your portfolio:</h3>
+          <div class="control-group">
+            <label class="control-label" for="faculty">Choose how your work will be presented :</label>
+            <div class="controls"  >
+              <select id="category" name="category" style="width:285px;" required>
+                <option value="">Choose how your work will be presented</option>
+                <option value="Links">a Link</option>
+                <option value="Codes">a Code Repos.</option>
+                <option value="Screenshots">Screenshots</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="new_work" style="display:none">
+            <div class="control-group">
+              <label class="control-label" for="title">Title :</label>
+              <div class="controls" >
+                <input type="text" class="input-xlarge" id="title" name="title" placeholder="Your work title">
+                <span class="help-inline" id="LastNameErrorText"></span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="short_descrip">Short Description :</label>
+              <div class="controls">
+                <textarea class="input-xlarge" name="short_descrip" id="short_descrip" rows="4" maxlength="140" placeholder="Write a brief about your work.."></textarea>
+                <p id="counter">Characters left: 140</p>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="short_descrip">Description :</label>
+              <div class="controls">
+                <textarea class="input-xlarge" name="descrip" id="descrip" rows="9" placeholder="Write a detailed description about your work.."></textarea>
+              </div>
+            </div>
+
+            <div class="control-group" id="Screenshots" style="display:none">
+              <label class="control-label" for="fileInput">Upload Screenshots :</label>
+              <div class="controls">
+                <input class="input-file" id="fileInput" type="file" name="Screenshots" multiple>
+              </div>
+            </div>
+
+            <div class="control-group" id="Links" style="display:none">
+              <label class="control-label" for="link">Link :</label>
+              <div class="controls">
+                <input type="url" class="input-xlarge" id="link" name="link" placeholder="Link to your work">
+                <span class="help-inline" id="LinkErrorText"></span>
+              </div>
+            </div>
+
+            <div class="control-group" id="Codes" style="display:none">
+              <label class="control-label" for="repo">Your github repo :</label>
+              <div class="controls">
+                <input type="text" class="input-xlarge" pattern="((?:[a-z][a-z0-9_]*))(\/)((?:[a-z][a-z0-9_]*))" id="repo" name="repo" placeholder="username/repo">
+                <span class="help-inline" id="repoErrorText"></span>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn btn-success offset2" id="submit">Create</button>
+        </fieldset>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+<% include ../views/include/footer %>
+
+<script>
+
+$('#firstName').on('blur', function() {
+  firstname();
+});
+function firstname(){
+  document.getElementById('FirstNameErrorText').innerHTML="";
+  var el = document.getElementById('firstNameDiv');
+  el.classList.remove("error");
+  el.classList.remove("success");
+
+  if($('#firstName').val().length<3){
+    el.classList.add("error");
+    document.getElementById('FirstNameErrorText').innerHTML="Please enter a valid first name.";
+    return 0;
+  }else{
+    el.classList.add("success");
+    return 1;
+  }
+}
+
+$('#lastName').on('blur', function() {
+  lastname();
+
+});
+function lastname(){
+  document.getElementById('LastNameErrorText').innerHTML="";
+  var el = document.getElementById('lastNameDiv');
+  el.classList.remove("error");
+  el.classList.remove("success");
+
+  if($('#lastName').val().length<3){
+    el.classList.add("error");
+    document.getElementById('LastNameErrorText').innerHTML="Please enter a valid last name.";
+    return 0;
+  }else{
+    el.classList.add("success");
+    return 1;
+  }
+}
+
+//
+// $('#submit').on('click',function(){
+//
+//   //alert(email() && password() && confirmPassword());
+//   if(firstname() && lastname()){
+//     $.post("/create_portfolio/<%=session.user._id%>",
+//   {
+//       firstName: $('#email').val(),
+//       lastName: $('#password').val(),
+//       id:
+//       faculty:
+//       category:
+//       title:
+//       short_descrip:
+//       descrip:
+//       link:
+//       repo:
+//
+//   },function(data){
+//     if(data){
+//       window.location.replace(data);
+//     }
+//   });
+//
+//   }
+// })
+
+
+</script>
+<script>
+$("#short_descrip").keyup(function(){
+  $("#counter").text("Characters left: " + (140- $(this).val().length));
+});
+
+$("#category").on('change',function(){
+  if(this.value=="")
+    $("#new_work").slideUp("slow");
+  else{
+
+    $("#title").prop('required',true);
+    $("#short_descrip").prop('required',true);
+
+  $("#repo").prop('required',false);
+  $("#link").prop('required',false);
+  $("#fileInput").prop('required',false);
+  $("#Codes").slideUp("slow");
+  $("#Screenshots").slideUp("slow");
+  $("#Links").slideUp("slow");
+  $("#"+this.value).slideDown("slow");
+  if(this.value=="Screenshots")
+      $("#fileInput").prop('required',true);
+  else if(this.value=="Codes")
+      $("#repo").prop('required',true);
+  else if(this.value=="Links")
+      $("#link").prop('required',true);
+
+  $("#new_work").slideDown("slow");
+}
+})
+</script>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="http://localhost:8080/">
+  <meta charset="utf-8">
+  <title>GUC portfolio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+  <link href="../css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../css/theme.css" rel="stylesheet">
+  <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="../css/docs.css" rel="stylesheet">
+  <link href="../js/google-code-prettify/prettify.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<!-- loader -->
+<style>
+
+
+
+        #loader{
+            display:block;
+            z-index: 5000;
+            position:fixed;
+            width: 300px;
+            left:50%;
+            top:50%;
+            margin-left: -150px;
+            margin-top: -80px;
+        }
+        #loader-wrapper .loader-section {
+            position: fixed;
+            width: 51%;
+            height: 100%;
+            background: #fff;
+            z-index: 1000;
+            -webkit-transform: translateX(0);  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: translateX(0);  /* IE 9 */
+            transform: translateX(0);  /* Firefox 16+, IE 10+, Opera */
+        }
+
+        #loader-wrapper .loader-section.section-left {
+            left: 0;
+        }
+
+        #loader-wrapper .loader-section.section-right {
+            right: 0;
+        }
+
+        /* Loaded */
+        .loaded #loader-wrapper .loader-section.section-left {
+            -webkit-transform: translateX(-100%);  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: translateX(-100%);  /* IE 9 */
+            transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */
+
+            -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+            transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        }
+
+        .loaded #loader-wrapper .loader-section.section-right {
+            -webkit-transform: translateX(100%);  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: translateX(100%);  /* IE 9 */
+            transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */
+
+            -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+            transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        }
+
+        .loaded #loader {
+            opacity: 0;
+            -webkit-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+        }
+        .loaded #loader-wrapper {
+            visibility: hidden;
+
+            -webkit-transform: translateY(-120%);  /* Chrome, Opera 15+, Safari 3.1+ */
+            -ms-transform: translateY(-120%);  /* IE 9 */
+            transform: translateY(-120%);  /* Firefox 16+, IE 10+, Opera */
+
+            -webkit-transition: all 0.3s 1s ease-out;
+            transition: all 0.3s 1s ease-out;
+        }
+
+    </style>
+
+    <div id="loader-wrapper">
+
+        <img id="loader" src="img/loading1.gif"/>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+
+    <script>
+        /*  $(window).load(function (){
+                      $('#body').addClass('loaded');
+                  });*/
+
+                   $(window).load(function (){
+                      $('#loader-wrapper').fadeOut(1000,function(){
+                          $('#page').fadeIn(500);
+                      });
+                  });
+          </script>
+<body>
+  <!--header-->
+  <div class="header">
+    <div class="wrap">
+      <div class="navbar navbar_ clearfix">
+        <div class="container">
+          <div class="row">
+            <div class="span4">
+              <div class="logo"><a href="index.html"><img src="img/logo.png" alt="" /></a></div>
+            </div>
+
+            <div class="span8">
+              <%if(!session.user){%>
+                <div class="span5 offset3">
+                  <form class="well form-inline" id="signIn" method="POST" action="/login">
+                    <input type="email" class="input" id="email" name="email" placeholder="Email">
+                    <input type="password" class="input-small" name="password" placeholder="Password">
+                    <button type="submit" class="btn">Sign in</button>
+                    <br>
+                    <%if(session.msg && session.msg.includes('password') >= 0){%>
+                      <c style="color:red">Email or password used are wrong please try again.</c>
+                      <a href="/register_page" style="margin-left:50px"> Register</a>
+                      <a href="" onclick="window.location='/forgot_password/'+'email='+document.getElementById('email').value;return false;" class="pull-right" style="margin-left:50px"> Forgot your password?</a>
+                      <%}else{%>
+                        <a href="/register_page" style="margin-left:338px"> Register</a>
+                          <a href="" onclick="window.location='/forgot_password/'+'email='+document.getElementById('email').value;return false;" class="pull-right" style="margin-left:50px"> Forgot your password?</a>
+                        <%}%>
+                  </form>
+                </div>
+                <%}else{%>
+                  <div class="span2 offset5"  style="    height: 160px;
+    background: bisque;
+    border-radius: 60px;
+    border-style: solid;
+border-color: chocolate;">
+
+                      <div class="col-sm-4 col-md-4 user-details">
+                        <%if(session.user.profileIMG != "default"){
+                          %>
+                          <div class="user-image">
+                            <img src="/profilePics/<%=session.user.profileIMG%>" alt="ME" title="Hello Michael" class="img-circle">
+                          </div>
+                          <%
+                        }else{%>
+                          <div class="user-image">
+                            <img src="/img/default_profile.png" alt="ME" title="Hello Michael" class="img-circle">
+                          </div>
+                      <%  }
+                        %>
+
+                        <div class="user-info-block">
+                          <div class="user-heading">
+                            <h3>Hello <%=session.user.firstName%></h3>
+                            <!-- <span class="help-block">Chandigarh, IN</span> -->
+                          </div>
+
+
+                        </div>
+                      </div>
+
+                  </div>
+
+                  <%}%>
+                  <div class="clear"></div>
+                  <nav id="main_menu">
+                    <div class="menu_wrap">
+                      <ul class="nav sf-menu">
+                        <li><a href="/">Home</a></li>
+                        <%if(session.user){%><li><a href="/view_portfolio/<%=session.user._id%>">My Portfolio</a></li><%}%>
+                        <%if(session.user && !session.user.hasPortfolio){%><li><a href="/create_portfolio_page">Create Portfolio</a></li><%}%>
+                        <%if(session.user &&  session.user.hasPortfolio){%><li><a href="/add_work_page">Add Work</a></li><%}%>
+                        <%if(session.user){%><li><a href="/logout">Logout</a></li><%}%>
+                      </ul>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%var messages=getMessages();
+        if(messages.success){
+          for(var i=0;i<messages.success.length;i++){
+            %>
+            <center>
+              <div class="alert alert-success">
+                <%=messages.success[i];%>
+              </div>
+            </center>
+            <%
+          }
+        }else if(messages.error){
+          for(var i=0;i<messages.error.length;i++){
+            %>
+            <center>
+              <div class="alert alert-error">
+                <%=messages.error[i];%>
+              </div>
+            </center>
+            %>
+            <%
+          }
+        }
+            %>
+
+
+      </div>
+
+
+<style>
+.user-details {position: relative; padding: 0;}
+.user-details .user-image {position: relative;  z-index: 1; width: 100%; text-align: center;}
+ .user-image img { clear: both; margin: auto; position: relative;    max-width: 100px;
+    max-height: 100px;border: 5px;
+    border-style: double;
+    margin: 5px;}
+
+.user-details .user-info-block {width: 100%; position: absolute; top: 55px;  z-index: 0; padding-top: 50px;}
+ .user-info-block .user-heading {width: 100%; text-align: center; margin: 10px 0 0;}
+ .user-info-block .navigation {float: left; width: 100%; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid #428BCA; border-top: 1px solid #428BCA;}
+  .navigation li {float: left; margin: 0; padding: 0;}
+   .navigation li a {padding: 20px 30px; float: left;}
+   .navigation li.active a {background: #428BCA; color: #fff;}
+ .user-info-block .user-body {float: left; padding: 5%; width: 90%;}
+  .user-body .tab-content > div {float: left; width: 100%;}
+  .user-body .tab-content h4 {width: 100%; margin: 10px 0; color: #333;}
+</style>
+      <!--//header-->

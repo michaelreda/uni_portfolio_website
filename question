@@ -1,0 +1,17 @@
+<%var visible=false;
+  if(msg)
+    visible=true;
+    %>
+<div class="alert alert-success" style="visible:<%=visible%>">
+  <%=msg%>
+</div>
+
+
+
+
+
+
+
+<div class="alert alert-success" style="visibility:<%=msg?'':'hidden'%>">
+  <%=msg%>
+</div>
