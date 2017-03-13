@@ -1,6 +1,9 @@
 # uni_portfolio_website
 Developped a portfolio system for students. Each student will be able to register to this website, add his or her works. Works can be screenshots, links to websites or code repositories. A client visiting the portfolio will view summary of student portfolios and can then choose to view the detailed portfolio of one student. Clients who are logged in can rate a student’s work. In addition, a client can search the portfolio to view relevant works.
 
+# live deployment: 
+<a href="http://52.42.154.103:8080">http://52.42.154.103:8080</a>
+
 # Bonus features included in the project:
 
 1- A client visiting the portfolio can choose to view the detailed portfolio of one student.
